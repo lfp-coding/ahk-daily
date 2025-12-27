@@ -1,16 +1,12 @@
 #SingleInstance force
 #Requires AutoHotkey v2.0
 
+#Include helper_functions.ahk
+
 ; windows + Alt + P ruft Windows Terminal auf
-#!p:: {
-    ; Check if Windows Terminal is already running
-    if WinExist("ahk_exe WindowsTerminal.exe") {
-        ; If it's the active window, minimize it
-        if WinActive("ahk_exe WindowsTerminal.exe")
-            WinMinimize
-        else
-            WinActivate  ; Otherwise, bring it to focus
-    }
-    else
-        Run "wt"  ; If not running, start it
-}
+#!p:: OpenProgram("WindowsTerminal.exe", "wt")
+
+; windows + Alt + N ruft Notepad++ auf
+#!n:: OpenProgram("Notepad.exe")
+
+#!c:: OpenProgram("comet.exe", , tag := "comet_main")
