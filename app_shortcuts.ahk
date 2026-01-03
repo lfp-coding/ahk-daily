@@ -21,4 +21,5 @@ Hotkey(hyper . "p", (*) => OpenProgram("WindowsTerminal.exe", "wt"))
 Hotkey(hyper . "n", (*) => OpenProgram("Notepad.exe"))
 
 ; Hyper + C ruft Comet AI im Standardbrowser auf, immer dieselbe Instanz
-Hotkey(hyper . "c", (*) => OpenProgram("comet.exe `"https://www.perplexity.ai/`"", , tag := "comet_main"))
+Hotkey(hyper . "c", (*) => OpenProgram("comet.exe", , "--new-window `"https://www.perplexity.ai/`"", tag :=
+    "comet_main"))
