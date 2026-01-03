@@ -34,12 +34,13 @@ OpenProgram(name, alias := "", tag := "") {
     if tag {
         global TaggedWindows
 
+        exe_name := StrSplit(name, " ")[1]
         ; Check if we already have a tagged window stored for this tag
         if TaggedWindows.Has(tag) {
             hwnd := TaggedWindows.Get(tag)
 
             ; Verify the stored window still exists and belongs to the correct program
-            if WinExist("ahk_id " . hwnd) && WinGetProcessName("ahk_id " . hwnd) = name {
+            if WinExist("ahk_id " . hwnd) && WinGetProcessName("ahk_id " . hwnd) = exe_name {
                 ; Window still valid - toggle it (minimize if active, activate if inactive)
                 if WinActive("ahk_id " . hwnd)
                     WinMinimize("ahk_id " . hwnd)
@@ -54,7 +55,7 @@ OpenProgram(name, alias := "", tag := "") {
 
         ; Tag doesn't exist or was stale - capture the window handle of the newly opened instance
         ; First, get list of all currently open instances of this program
-        old_hwnd := WinGetList("ahk_exe " . name)
+        old_hwnd := WinGetList("ahk_exe " . exe_name)
 
         ; Launch the program
         Run alias ? alias : name
@@ -63,8 +64,7 @@ OpenProgram(name, alias := "", tag := "") {
         Sleep 500
 
         ; Get updated list of all open instances
-        new_hwnd := WinGetList("ahk_exe " . name)
-        dfdf := 0
+        new_hwnd := WinGetList("ahk_exe " . exe_name)
         ; Find the newly opened window by comparing old and new lists
         ; Using Map.Has() is more efficient than nested loop iteration
         for hwnd in new_hwnd {
