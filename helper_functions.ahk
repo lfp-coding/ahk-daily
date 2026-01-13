@@ -4,6 +4,7 @@
 global TaggedWindows := Map()
 
 OpenProgram(name, alias := "", options := "", tag := "") {
+    exe_name := RegExReplace(name, ".*[\\/](.+)$", "$1")
 
     if tag {
         global TaggedWindows
@@ -13,7 +14,7 @@ OpenProgram(name, alias := "", options := "", tag := "") {
             hwnd := TaggedWindows.Get(tag)
 
             ; Verify the stored window still exists and belongs to the correct program
-            if WinExist("ahk_id " . hwnd) && WinGetProcessName("ahk_id " . hwnd) = name {
+            if WinExist("ahk_id " . hwnd) && WinGetProcessName("ahk_id " . hwnd) = exe_name {
                 ; Tagged window exists - toggle its state
                 if WinActive("ahk_id " . hwnd)
                     WinMinimize("ahk_id " . hwnd)
@@ -36,6 +37,9 @@ OpenProgram(name, alias := "", options := "", tag := "") {
             Run (alias ? alias : name) (options ? " " options : "")
             ; Wait for new window and rename it with the tag
             Sleep 2000
+            if tag = "comet_ai" {
+                Send("{F11}")
+            } ; Specific action for comet_ai to go fullscreen
             loop {
                 afterList := WinGetList("ahk_exe " name)
                 if (afterList.Length > beforeCount) {
@@ -63,8 +67,8 @@ OpenProgram(name, alias := "", options := "", tag := "") {
     }
     else {
         ; No tag parameter - simple toggle behavior: toggle any open instance of the program
-        if WinExist("ahk_exe " . name) {
-            if WinActive("ahk_exe " . name)
+        if WinExist("ahk_exe " . exe_name) {
+            if WinActive("ahk_exe " . exe_name)
                 WinMinimize()
             else
                 WinActivate()
