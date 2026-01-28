@@ -31,3 +31,5 @@ Hotkey(hyper . "v", (*) => OpenProgram("C:\Users\lefep\scoop\apps\vscode\current
 
 ; speedcrunch mit Hyper + R öffnen
 Hotkey(hyper . "r", (*) => OpenProgram("speedcrunch.exe"))
+
+Hotkey(hyper . "o", (*) => Run("C:\Users\lefep\scoop\apps\nircmd\current\nircmd.exe monitor async_off"))
